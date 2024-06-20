@@ -320,7 +320,8 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
 func metricName(in string) string {
 	out := toSnake(in)
-	return strings.Replace(out, ".", "_", -1)
+	out = strings.Replace(out, ".", "_", -1)
+	return strings.Replace(out, "-", "_", -1)
 }
 
 // toSnake convert the given string to snake case following the Golang format:
