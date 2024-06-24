@@ -1,15 +1,15 @@
-FROM golang:1.16 AS BUILD
-
-LABEL maintainer="Roman Tkalenko"
-
-COPY . /go/src/github.com/ClickHouse/clickhouse_exporter
-
-WORKDIR /go/src/github.com/ClickHouse/clickhouse_exporter
-
-RUN make init && make
+FROM golang:1.22 AS BUILD
 
 
-FROM frolvlad/alpine-glibc:alpine-3.13
+
+COPY . /go/src/github.com/itcrow/clickhouse_exporter
+
+WORKDIR /go/src/github.com/itcrow/clickhouse_exporter
+
+RUN  make
+
+
+FROM gcr.io/distroless/static-debian12
 
 COPY --from=BUILD /go/bin/clickhouse_exporter /usr/local/bin/clickhouse_exporter
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
